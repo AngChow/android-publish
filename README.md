@@ -4,44 +4,19 @@
 
 ## 安装
 
-### 方式一：通过 Codex Skill Installer 安装（推荐）
+对 CodeX 说：
 
-```bash
-python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
-    --repo <your-github-username>/android-publish
-```
+**帮我安装 [AngChow/android-publish](https://github.com/AngChow/android-publish) 这个 skill 及相关库**
 
-安装完成后，在下一轮对话中 Codex 即可自动识别该 Skill。
-
-### 方式二：手动 clone
-
-```bash
-git clone https://github.com/<your-github-username>/android-publish.git \
-    ~/.codex/skills/android-publish
-```
-
-### 安装 Python 依赖
-
-```bash
-pip3 install -r ~/.codex/skills/android-publish/requirements.txt
-```
-
-> **Bugly 符号表工具**已内置在 `tools/buglyqq-upload-symbol.jar`，无需额外下载。凭据从 `.publish_env` 的 `BUGLY_APP_ID` / `BUGLY_APP_KEY` 读取。不配置也不影响提审流程（符号表上传为非阻塞步骤）。
+CodeX 会自动通过 Skill Installer 拉取仓库、安装 Python 依赖。Bugly 符号表工具已内置在 `tools/buglyqq-upload-symbol.jar`，无需额外下载。
 
 ## 快速开始
 
-1. 在 Android 项目根目录创建 `.publish_env`，填入各渠道凭据（见 [配置](#配置)）
-2. 将 `.publish_env` 和小米公钥证书文件加入 `.gitignore`
-3. 执行一条龙命令：
+配置好 `.publish_env`（见 [配置](#配置)）后，对 CodeX 说：
 
-```bash
-PUBLISH_CONFIRM_SUBMIT=YES python3 ~/.codex/skills/android-publish/scripts/build_and_submit.py \
-    --i-know-this-submits-to-production \
-    --update-desc "修复已知问题，优化用户体验" \
-    /path/to/your-android-project
-```
+**[$android-publish](https://github.com/AngChow/android-publish/blob/main/SKILL.md) 打包提审当前项目**
 
-脚本会自动完成：预检查 -> 打包 -> Bugly 符号表上传 -> 多渠道上传提审 -> Git 打 tag。
+CodeX 会自动完成：预检查 -> 打包 -> Bugly 符号表上传 -> 多渠道上传提审 -> Git 打 tag。
 
 ## 支持渠道
 
