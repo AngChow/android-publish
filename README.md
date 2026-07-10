@@ -93,10 +93,7 @@ BUGLY_APP_KEY="Bugly 应用 Key"
 ### 2. 小米公钥证书
 
 小米渠道需要将公钥证书文件（`dev.api.public.cer`）放在项目根目录，并加入 `.gitignore`：
-
-```bash
-echo "dev.api.public.cer" >> .gitignore
-```
+（或让 CodeX 帮你加入 `.gitignore`）
 
 ### 3. 运行环境
 
@@ -111,78 +108,33 @@ echo "dev.api.public.cer" >> .gitignore
 
 ## 使用方法
 
-### 预检查 + 打包 + 多渠道提审一条龙
+### 打包提审
 
-```bash
-# 全渠道（自动检测已配置的）
-PUBLISH_CONFIRM_SUBMIT=YES python3 ~/.codex/skills/android-publish/scripts/build_and_submit.py \
-    --i-know-this-submits-to-production \
-    --update-desc "修复已知问题" \
-    /Users/Ang/workspace/mobile-android
+对 CodeX 说：
 
-# 仅应用宝
-PUBLISH_CONFIRM_SUBMIT=YES python3 ~/.codex/skills/android-publish/scripts/build_and_submit.py \
-    --store yyb --i-know-this-submits-to-production \
-    /Users/Ang/workspace/mobile-android
+- **全渠道提审**：帮我打包提审当前项目
+- **指定渠道**：帮我提审到小米（可替换为华为 / OPPO / vivo / 应用宝）
+- **跳过打包**：帮我提审当前项目，跳过打包直接用已有 APK
+- **仅上传不提审**（仅应用宝）：帮我上传 APK 到应用宝，先不提审
+- **自定义文案**：帮我打包提审，更新文案写"新增 XX 功能"
 
-# 仅小米
-PUBLISH_CONFIRM_SUBMIT=YES python3 ~/.codex/skills/android-publish/scripts/build_and_submit.py \
-    --store xiaomi --i-know-this-submits-to-production \
-    /Users/Ang/workspace/mobile-android
+CodeX 会自动执行预检查、打包、Bugly 符号表上传、多渠道提审、Git 打 tag 全流程。
 
-# 跳过打包
-PUBLISH_CONFIRM_SUBMIT=YES python3 ~/.codex/skills/android-publish/scripts/build_and_submit.py \
-    --skip-build --i-know-this-submits-to-production \
-    /Users/Ang/workspace/mobile-android
-```
+### 单渠道操作
 
-### 单渠道直接上传
+对 CodeX 说：
 
-**应用宝**：
-```bash
-YYB_CONFIRM_SUBMIT=YES python3 ~/.codex/skills/android-publish/scripts/submit_apk.py \
-    /path/to/app.apk --i-know-this-submits-to-production --feature "更新说明"
-```
+| 渠道 | 提审 | 查询 |
+|------|------|------|
+| 应用宝 | 帮我把 APK 提审到应用宝 | 帮我查应用宝审核状态 / 应用详情 |
+| 小米 | 帮我把 APK 提审到小米 | 帮我查小米应用信息 |
+| 华为 | 帮我把 APK 提审到华为 | 帮我查华为应用信息 |
+| OPPO | 帮我把 APK 提审到 OPPO | 帮我查 OPPO 应用详情 |
+| vivo | 帮我把 APK 提审到 vivo | 帮我查 vivo 应用详情 |
 
-**小米**：
-```bash
-MI_CONFIRM_SUBMIT=YES python3 ~/.codex/skills/android-publish/scripts/mi_submit.py \
-    --apk /path/to/app.apk --update-desc "更新说明" \
-    --i-know-this-submits-to-production
-```
+### 安全锁
 
-### 查询
-
-```bash
-# 应用宝应用详情
-python3 ~/.codex/skills/android-publish/scripts/query_app_detail.py
-
-# 应用宝审核状态
-python3 ~/.codex/skills/android-publish/scripts/query_status.py
-
-# 小米应用信息
-python3 ~/.codex/skills/android-publish/scripts/mi_query.py
-
-# 华为应用信息
-python3 ~/.codex/skills/android-publish/scripts/hw_query.py
-
-# OPPO 应用信息
-python3 ~/.codex/skills/android-publish/scripts/oppo_query.py
-
-# vivo 应用信息
-python3 ~/.codex/skills/android-publish/scripts/vivo_query.py
-```
-
-## 安全锁
-
-| 场景 | 环境变量 | 命令行 flag |
-|------|---------|------------|
-| 应用宝单渠道 | `YYB_CONFIRM_SUBMIT=YES` | `--i-know-this-submits-to-production` |
-| 小米单渠道 | `MI_CONFIRM_SUBMIT=YES` | `--i-know-this-submits-to-production` |
-| 华为单渠道 | `HW_CONFIRM_SUBMIT=YES` | `--i-know-this-submits-to-production` |
-| OPPO 单渠道 | `OPPO_CONFIRM_SUBMIT=YES` | `--i-know-this-submits-to-production` |
-| vivo 单渠道 | `VIVO_CONFIRM_SUBMIT=YES` | `--i-know-this-submits-to-production` |
-| 多渠道一条龙 | `PUBLISH_CONFIRM_SUBMIT=YES` | `--i-know-this-submits-to-production` |
+提审是写线上操作，CodeX 会在执行前要求你明确确认。底层通过命令行 `--i-know-this-submits-to-production` + 环境变量双重校验，你只需在对话中确认即可。
 
 ## 各渠道特点
 
