@@ -1,0 +1,4 @@
+interface:
+  display_name: "Android打包提审"
+  short_description: "Android应用打包提审到应用宝/小米/华为/OPPO/vivo五大应用市场"
+  default_prompt: "帮我打包提审当前项目"
